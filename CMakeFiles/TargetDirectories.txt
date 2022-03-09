@@ -1,0 +1,5 @@
+/home/viet1004/MAP586/MAP586/Projects/myProject/CMakeFiles/rebuild_cache.dir
+/home/viet1004/MAP586/MAP586/Projects/myProject/CMakeFiles/edit_cache.dir
+/home/viet1004/MAP586/MAP586/Projects/myProject/CMakeFiles/test.dir
+/home/viet1004/MAP586/MAP586/Projects/myProject/CMakeFiles/tester.dir
+/home/viet1004/MAP586/MAP586/Projects/myProject/CMakeFiles/DEPIXELIZER.dir

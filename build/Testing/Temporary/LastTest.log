@@ -1,0 +1,22 @@
+Start testing: Mar 08 16:23 CET
+----------------------------------------------------------
+1/1 Testing: Tester
+1/1 Test: Tester
+Command: "/home/viet1004/MAP586/MAP586/Projects/myProject/build/tester"
+Directory: /home/viet1004/MAP586/MAP586/Projects/myProject/build
+"Tester" start time: Mar 08 16:23 CET
+Output:
+----------------------------------------------------------
+00   RGB color: 255 255 255
+01   RGB color: 255 255 255
+10   RGB color: 255 255 255
+11   RGB color: 0 0 0
+<end of output>
+Test time =   0.08 sec
+----------------------------------------------------------
+Test Passed.
+"Tester" end time: Mar 08 16:23 CET
+"Tester" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Mar 08 16:23 CET
