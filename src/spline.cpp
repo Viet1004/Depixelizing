@@ -47,12 +47,13 @@ void printSpline(svg::Document& doc, std::vector<FPoint> matrix_, Color_RGB colo
 
 }
 
-void drawImage_(svg::Document &doc, std::vector<std::pair<FPoint, Color_RGB>> points)
+void drawImage_(svg::Document &doc, std::vector<std::vector<std::pair<FPoint, Color_RGB>>> outlines)
 {
 	//Draw Voronoi Diagrams
-	
-	for(int i = 0; i < points.size()-2; i++)
-		printSpline(doc, {points[i].first,points[(i+1)%points.size()].first,points[(i+2)%points.size()].first}, points[i+1].second);
+	for(auto points: outlines){
+		for(int i = 0; i < points.size()-2; i++)
+			printSpline(doc, {points[i].first,points[(i+1)%points.size()].first,points[(i+2)%points.size()].first}, points[i+1].second);
+	}
 	
 
 }

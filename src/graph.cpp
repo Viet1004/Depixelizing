@@ -525,9 +525,16 @@ Color_YUV darker(Color_YUV a, Color_YUV b)
 void Graph::extractActiveNode(){
     for (int i = 0; i< height; i++){
         for (int j = 0; j< width; j++){
+            std::cout << i << " " << j << std::endl;
             std::map<Direction,  std::pair<FPoint, FPoint>> edges = get_node(i,j).edge_Voronoi;
-            for( int k = 0; k < 8; k++){
-                if(edges.find((Direction)k) == edges.end()){
+            std::vector<Direction> temp_dir;
+            for(auto iter = edges.begin(); iter != edges.end(); iter++){
+                temp_dir.push_back(iter->first);
+                std::cout << iter->first << std::endl;
+            } 
+            for( Direction k: temp_dir){
+                if(std::find(graph[i][j].neighbors.begin(),graph[i][j].neighbors.end(), k) == graph[i][j].neighbors.end()){
+                    std::cout << k << std::endl;
                     int temp_i = i + direction[k][0];
                     int temp_j = j + direction[k][1];
                     if(insideBounds(temp_i, temp_j, 0, height -1, 0, width))
@@ -592,8 +599,8 @@ int choose_direction(FPoint curr, FPoint prev, FPoint p1, FPoint p2){
     return 0;
 }
 
-std::vector<FPoint> Graph::auxilary_traverse_graph( FPoint prev, FPoint curr){
-    std::vector<FPoint> res{curr};
+std::vector<std::pair<FPoint, Color_RGB>> Graph::auxilary_traverse_graph( FPoint prev, FPoint curr){
+    std::vector<std::pair<FPoint, Color_RGB>> res{std::make_pair(curr,std::make_tuple(0,255,255))};
     if (AEgraph[curr].visited == true){
         return res;
     }
@@ -608,12 +615,12 @@ std::vector<FPoint> Graph::auxilary_traverse_graph( FPoint prev, FPoint curr){
                 if (AEgraph[curr].neighbors.begin()->first == prev){
                     prev = curr;
                     curr = (++AEgraph[curr].neighbors.begin())->first;
-                    res.push_back(curr);
+                    res.push_back(std::make_pair(curr, (++AEgraph[curr].neighbors.begin())->second));
                     AEgraph[curr].visited = true;
                 }else{
                     prev = curr;
                     curr = AEgraph[curr].neighbors.begin()->first;
-                    res.push_back(curr);
+                    res.push_back(std::make_pair(curr,AEgraph[curr].neighbors.begin()->second));
                     AEgraph[curr].visited = true;
                 }
                 break;
@@ -622,23 +629,23 @@ std::vector<FPoint> Graph::auxilary_traverse_graph( FPoint prev, FPoint curr){
                 if(AEgraph[curr].visited == true){
                     return res;
                 }
-                FPoint temp[2];
+                std::pair<FPoint, Color_RGB> temp[2];
                 size_t temp_i = 0;
                 for(std::set<std::pair<FPoint, Color_RGB>>::iterator i = AEgraph[curr].neighbors.begin(); i != AEgraph[curr].neighbors.end(); i++){
-                    if(i->first != prev)   temp[temp_i++] = i->first;
+                    if(i->first != prev)   temp[temp_i++] = *i;
                 }
-                switch(choose_direction(curr, prev, temp[0], temp[1])){
+                switch(choose_direction(curr, prev, temp[0].first, temp[1].first)){
                     case 0:
                         return res;
                     case 1:
                         prev = curr;
-                        curr = temp[0];
-                        res.push_back(curr);
+                        curr = temp[0].first;
+                        res.push_back(std::make_pair(curr, temp[0].second));
                         AEgraph[curr].visited = true;
                     case 2:
                         prev = curr;
-                        curr = temp[1];
-                        res.push_back(curr);
+                        curr = temp[1].first;
+                        res.push_back(std::make_pair(curr, temp[1].second));
                         AEgraph[curr].visited = true;
                 }
                 break;
@@ -648,14 +655,15 @@ std::vector<FPoint> Graph::auxilary_traverse_graph( FPoint prev, FPoint curr){
                 if(AEgraph[curr].visited == true){
                     return res;
                 }
-                FPoint temp[3];
+                std::pair<FPoint, Color_RGB> temp[3];
                 size_t temp_i = 0;
                 for(std::set<std::pair<FPoint, Color_RGB>>::iterator i = AEgraph[curr].neighbors.begin(); i != AEgraph[curr].neighbors.end(); i++){
-                    if(i->first != prev)   temp[temp_i++] = i->first;
+                    if(i->first != prev)   temp[temp_i++] = *i;
                 }
                 prev = curr;
-                curr = temp[rand()%3];
-                res.push_back(curr);
+                int temp_index = rand()%3;
+                curr = temp[temp_index].first;
+                res.push_back(std::make_pair(curr, temp[temp_index].second));
                 AEgraph[curr].visited = true;
                 break;
             }
@@ -675,8 +683,8 @@ void Graph::TraverseGraph(FPoint point){
     if(AEgraph[point].neighbors.size() == 1){
         prev = curr;
         curr = AEgraph[point].neighbors.begin()->first;
-        std::vector<FPoint> line = auxilary_traverse_graph(prev, curr); 
-        line.insert(line.begin(), prev);
+        std::vector<std::pair<FPoint, Color_RGB>> line = auxilary_traverse_graph(prev, curr); 
+        line.insert(line.begin(), std::make_pair(prev, std::make_tuple(0,255,255)));
         mainOutLines.push_back(line);
         return;
     }
@@ -715,28 +723,30 @@ void Graph::TraverseGraph(FPoint point){
         firstPoint = temp[rand()%2];
         secondPoint = temp[2+rand()%2];
     }
-    std::vector<FPoint> line_1 = auxilary_traverse_graph(prev, firstPoint);
-    if(std::find(line_1.begin(), line_1.end(), secondPoint)!= line_1.end()){
-        mainOutLines.push_back(line_1);
-        return;
-    }
-    std::vector<FPoint> line_2 = auxilary_traverse_graph(prev, secondPoint); 
-    line_1.insert(line_1.begin(), prev);
+    std::vector<std::pair<FPoint, Color_RGB>> line_1 = auxilary_traverse_graph(prev, firstPoint);
+//    if(std::find(line_1.begin(), line_1.end(), secondPoint)!= line_1.end()){
+//        mainOutLines.push_back(line_1);
+//        return;
+//    }
+    std::vector<std::pair<FPoint, Color_RGB>> line_2 = auxilary_traverse_graph(prev, secondPoint); 
+    line_1.insert(line_1.begin(), std::make_pair(prev, std::make_tuple(0,255,255)));
     std::reverse(line_2.begin(), line_2.end());
     line_2.insert(line_2.end(), line_1.begin(), line_1.end());
     mainOutLines.push_back(line_2);
     return;    
 }
 
-std::vector<std::vector<FPoint>> Graph::getMainOutline(){
+void Graph::linkMainOutline(){
     for (std::map<FPoint, Control_Point>::iterator i = AEgraph.begin(); i != AEgraph.end(); i++){
         if(!i->second.visited){
             TraverseGraph(i->first);
         }
     }
-    return mainOutLines;
 }
 
+std::vector<std::vector<std::pair<FPoint, Color_RGB>>> Graph::getMainOutline(){
+    return mainOutLines;
+}
 
 
 /*            if ( i==0 && j == 0){

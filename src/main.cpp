@@ -70,7 +70,10 @@ int main(int argc, char** argv)
     graph.planarize();
     graph.voronoi_formation();
     
+	//spline
 
+	graph.extractActiveNode();
+	graph.toAdjacencyList();
 /*    std::vector<Direction> neighbor11 = graph.get_neighbors(0,0);
     std::vector<Direction>::iterator d; 
     d = std::find(neighbor11.begin(), neighbor11.end(), RIGHT);
@@ -84,15 +87,26 @@ int main(int argc, char** argv)
 	std::vector<FPoint> matrix = {std::make_pair(0,0),std::make_pair(1,1),std::make_pair(0,2)};
 	Color_RGB color = std::make_tuple(125,125,255);
 
-	std::vector<std::vector<FPoint>> mainOutLines = graph.getMainOutline();
+	
+
+	std::vector<std::pair<fEdge, Color_RGB>> activeEdges = graph.get_activeEdges();
+
+	for (auto edge : activeEdges){
+			std::cout << "Edges:" << std::endl;
+			std::cout << edge.first.first.first << " " << edge.first.first.second << std::endl; 
+			std::cout << edge.first.second.first << " " << edge.first.second.second << std::endl;
+	}
 //	printSpline(doc, matrix, color);
 //	drawImage(doc, graph, mat_image);
 	
-	std::vector<std::pair<FPoint, Color_RGB>> points = {std::make_pair(std::make_pair(0,0), std::make_tuple(225,125,255)),
-														std::make_pair(std::make_pair(1,1), std::make_tuple(125,225,255)),
-														std::make_pair(std::make_pair(0,2), std::make_tuple(125,0,0)),
-														std::make_pair(std::make_pair(2,2), std::make_tuple(125,0,255))};
-	drawImage_(doc, points);
+//	std::vector<std::pair<FPoint, Color_RGB>> points = {std::make_pair(std::make_pair(0,0), std::make_tuple(225,125,255)),
+//														std::make_pair(std::make_pair(1,1), std::make_tuple(125,225,255)),
+//														std::make_pair(std::make_pair(0,2), std::make_tuple(125,0,0)),
+//														std::make_pair(std::make_pair(2,2), std::make_tuple(125,0,255))};
+
+	std::vector<std::vector<std::pair<FPoint, Color_RGB>>> mainOutLines = graph.getMainOutline();
+
+	drawImage_(doc, mainOutLines);
 	doc.save();
 
 	return 0;
