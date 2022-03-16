@@ -3,6 +3,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include "../include/myApp/graph.hpp"
 #include "../include/myApp/image.hpp"
+#include "../include/myApp/spline.hpp"
 #include "simple-svg.hpp"
 
 //#include "../include/myApp/voronoi.hpp"
@@ -12,6 +13,7 @@
 //using namespace cv;
 
 #define draw(x, y) svg::Point(IMAGE_SCALE * x, IMAGE_SCALE * y)
+
 unsigned IMAGE_SCALE = 10;
 
 void drawPolygon(svg::Document &doc, std::vector<std::pair<float,float> > hull, const std::tuple<int,int,int>& c)
@@ -61,7 +63,7 @@ int main(int argc, char** argv)
 //	imshow("test",image);
 //	std::string input_path = std::string(argv[1]);
 //	Image mat_image(input_path);
-	Image mat_image("../tests/Images/snow.bmp");
+	Image mat_image("../tests/Images/2x2.bmp");
     Graph graph(mat_image);
 //   	Node node = graph.get_node(1,1);
 //	graph.simple_link();
@@ -77,11 +79,20 @@ int main(int argc, char** argv)
     }
 */
 	svg::Dimensions dimensions(IMAGE_SCALE * graph.get_width(), IMAGE_SCALE * graph.get_height());
-	svg::Document doc("testingsnow.svg", svg::Layout(dimensions, svg::Layout::TopLeft));
+	svg::Document doc("testingsnow1.svg", svg::Layout(dimensions, svg::Layout::TopLeft));
     
+	std::vector<FPoint> matrix = {std::make_pair(0,0),std::make_pair(1,1),std::make_pair(0,2)};
+	Color_RGB color = std::make_tuple(125,125,255);
 
-	drawImage(doc, graph, mat_image);
-
+	std::vector<std::vector<FPoint>> mainOutLines = graph.getMainOutline();
+//	printSpline(doc, matrix, color);
+//	drawImage(doc, graph, mat_image);
+	
+	std::vector<std::pair<FPoint, Color_RGB>> points = {std::make_pair(std::make_pair(0,0), std::make_tuple(225,125,255)),
+														std::make_pair(std::make_pair(1,1), std::make_tuple(125,225,255)),
+														std::make_pair(std::make_pair(0,2), std::make_tuple(125,0,0)),
+														std::make_pair(std::make_pair(2,2), std::make_tuple(125,0,255))};
+	drawImage_(doc, points);
 	doc.save();
 
 	return 0;

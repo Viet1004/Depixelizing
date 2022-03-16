@@ -7,6 +7,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/viet1004/MAP586/MAP586/Projects/myProject/src/graph.cpp" "/home/viet1004/MAP586/MAP586/Projects/myProject/CMakeFiles/DEPIXELIZER.dir/src/graph.cpp.o"
   "/home/viet1004/MAP586/MAP586/Projects/myProject/src/image.cpp" "/home/viet1004/MAP586/MAP586/Projects/myProject/CMakeFiles/DEPIXELIZER.dir/src/image.cpp.o"
   "/home/viet1004/MAP586/MAP586/Projects/myProject/src/main.cpp" "/home/viet1004/MAP586/MAP586/Projects/myProject/CMakeFiles/DEPIXELIZER.dir/src/main.cpp.o"
+  "/home/viet1004/MAP586/MAP586/Projects/myProject/src/spline.cpp" "/home/viet1004/MAP586/MAP586/Projects/myProject/CMakeFiles/DEPIXELIZER.dir/src/spline.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

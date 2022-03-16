@@ -15,6 +15,10 @@ map
 -
 memory
 -
+cmath
+-
+stdlib.h
+-
 image.hpp
 /home/viet1004/MAP586/MAP586/Projects/myProject/include/myApp/image.hpp
 
@@ -28,9 +32,45 @@ iostream
 opencv2/opencv.hpp
 -
 
-/home/viet1004/MAP586/MAP586/Projects/myProject/src/graph.cpp
+/home/viet1004/MAP586/MAP586/Projects/myProject/include/myApp/spline.hpp
+vector
+-
+tuple
+-
+iostream
+-
+graph.hpp
+/home/viet1004/MAP586/MAP586/Projects/myProject/include/myApp/graph.hpp
+../../src/simple-svg.hpp
+/home/viet1004/MAP586/MAP586/Projects/myProject/src/simple-svg.hpp
+
+/home/viet1004/MAP586/MAP586/Projects/myProject/src/main.cpp
+iostream
+-
+opencv2/opencv.hpp
+-
+opencv2/highgui/highgui.hpp
+-
 ../include/myApp/graph.hpp
 /home/viet1004/MAP586/MAP586/Projects/myProject/include/myApp/graph.hpp
+../include/myApp/image.hpp
+/home/viet1004/MAP586/MAP586/Projects/myProject/include/myApp/image.hpp
+../include/myApp/spline.hpp
+/home/viet1004/MAP586/MAP586/Projects/myProject/include/myApp/spline.hpp
+simple-svg.hpp
+/home/viet1004/MAP586/MAP586/Projects/myProject/src/simple-svg.hpp
+
+/home/viet1004/MAP586/MAP586/Projects/myProject/src/simple-svg.hpp
+vector
+-
+string
+-
+sstream
+-
+fstream
+-
+iostream
+-
 
 /home/viet1004/anaconda3/envs/MAP586/include/opencv4/opencv2/calib3d.hpp
 opencv2/core.hpp
@@ -841,6 +881,10 @@ opencv2/imgcodecs.hpp
 /home/viet1004/anaconda3/envs/MAP586/include/opencv4/opencv2/opencv2/imgcodecs.hpp
 opencv2/videoio.hpp
 /home/viet1004/anaconda3/envs/MAP586/include/opencv4/opencv2/opencv2/videoio.hpp
+
+/home/viet1004/anaconda3/envs/MAP586/include/opencv4/opencv2/highgui/highgui.hpp
+opencv2/highgui.hpp
+/home/viet1004/anaconda3/envs/MAP586/include/opencv4/opencv2/highgui/opencv2/highgui.hpp
 
 /home/viet1004/anaconda3/envs/MAP586/include/opencv4/opencv2/imgcodecs.hpp
 opencv2/core.hpp

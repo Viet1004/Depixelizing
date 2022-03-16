@@ -234,6 +234,33 @@ src/main.cpp.s:
 	$(MAKE) -f CMakeFiles/DEPIXELIZER.dir/build.make CMakeFiles/DEPIXELIZER.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/spline.o: src/spline.cpp.o
+
+.PHONY : src/spline.o
+
+# target to build an object file
+src/spline.cpp.o:
+	$(MAKE) -f CMakeFiles/DEPIXELIZER.dir/build.make CMakeFiles/DEPIXELIZER.dir/src/spline.cpp.o
+.PHONY : src/spline.cpp.o
+
+src/spline.i: src/spline.cpp.i
+
+.PHONY : src/spline.i
+
+# target to preprocess a source file
+src/spline.cpp.i:
+	$(MAKE) -f CMakeFiles/DEPIXELIZER.dir/build.make CMakeFiles/DEPIXELIZER.dir/src/spline.cpp.i
+.PHONY : src/spline.cpp.i
+
+src/spline.s: src/spline.cpp.s
+
+.PHONY : src/spline.s
+
+# target to generate assembly for a file
+src/spline.cpp.s:
+	$(MAKE) -f CMakeFiles/DEPIXELIZER.dir/build.make CMakeFiles/DEPIXELIZER.dir/src/spline.cpp.s
+.PHONY : src/spline.cpp.s
+
 tests/tester.o: tests/tester.cpp.o
 
 .PHONY : tests/tester.o
@@ -281,6 +308,9 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/spline.o"
+	@echo "... src/spline.i"
+	@echo "... src/spline.s"
 	@echo "... tests/tester.o"
 	@echo "... tests/tester.i"
 	@echo "... tests/tester.s"

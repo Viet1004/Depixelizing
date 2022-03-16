@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/tester.dir/src/graph.cpp.o"
+  "CMakeFiles/tester.dir/src/image.cpp.o"
   "CMakeFiles/tester.dir/tests/tester.cpp.o"
   "tester"
   "tester.pdb"

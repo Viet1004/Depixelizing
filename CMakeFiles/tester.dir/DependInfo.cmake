@@ -4,6 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/viet1004/MAP586/MAP586/Projects/myProject/src/graph.cpp" "/home/viet1004/MAP586/MAP586/Projects/myProject/CMakeFiles/tester.dir/src/graph.cpp.o"
+  "/home/viet1004/MAP586/MAP586/Projects/myProject/src/image.cpp" "/home/viet1004/MAP586/MAP586/Projects/myProject/CMakeFiles/tester.dir/src/image.cpp.o"
   "/home/viet1004/MAP586/MAP586/Projects/myProject/tests/tester.cpp" "/home/viet1004/MAP586/MAP586/Projects/myProject/CMakeFiles/tester.dir/tests/tester.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

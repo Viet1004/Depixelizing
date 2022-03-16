@@ -76,7 +76,7 @@ clean: CMakeFiles/DEPIXELIZER.dir/clean
 CMakeFiles/tester.dir/all:
 	$(MAKE) -f CMakeFiles/tester.dir/build.make CMakeFiles/tester.dir/depend
 	$(MAKE) -f CMakeFiles/tester.dir/build.make CMakeFiles/tester.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/viet1004/MAP586/MAP586/Projects/myProject/build/CMakeFiles --progress-num=5,6,7,8 "Built target tester"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/viet1004/MAP586/MAP586/Projects/myProject/build/CMakeFiles --progress-num=6,7,8,9 "Built target tester"
 .PHONY : CMakeFiles/tester.dir/all
 
 # Build rule for subdir invocation for target.
@@ -103,12 +103,12 @@ CMakeFiles/tester.dir/clean:
 CMakeFiles/DEPIXELIZER.dir/all:
 	$(MAKE) -f CMakeFiles/DEPIXELIZER.dir/build.make CMakeFiles/DEPIXELIZER.dir/depend
 	$(MAKE) -f CMakeFiles/DEPIXELIZER.dir/build.make CMakeFiles/DEPIXELIZER.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/viet1004/MAP586/MAP586/Projects/myProject/build/CMakeFiles --progress-num=1,2,3,4 "Built target DEPIXELIZER"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/viet1004/MAP586/MAP586/Projects/myProject/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target DEPIXELIZER"
 .PHONY : CMakeFiles/DEPIXELIZER.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/DEPIXELIZER.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/viet1004/MAP586/MAP586/Projects/myProject/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/viet1004/MAP586/MAP586/Projects/myProject/build/CMakeFiles 5
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/DEPIXELIZER.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/viet1004/MAP586/MAP586/Projects/myProject/build/CMakeFiles 0
 .PHONY : CMakeFiles/DEPIXELIZER.dir/rule

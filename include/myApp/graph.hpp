@@ -5,12 +5,15 @@
 #include <stack>
 #include <map>
 #include <memory>
+#include <cmath>
+#include <stdlib.h> 
 #include "image.hpp"
 
 using FPoint = std::pair<float,float>;
 using fEdge = std::pair<FPoint, FPoint>;
 using IntPoint = std::pair<size_t,size_t>;
-
+using Color_YUV = std::tuple<float, float, float>;
+using Color_RGB = std::tuple<float, float, float>;
 enum Direction {
     TOP_LEFT = 0,
     TOP = 1,
@@ -35,6 +38,11 @@ const int direction[8][2] =
 };
 
 
+
+struct Control_Point{
+    std::set<std::pair<FPoint, Color_RGB>> neighbors;
+    bool visited;
+};
 
 struct Node{
 //    IntPoint position;
@@ -62,6 +70,9 @@ class Graph{
     size_t height;
     size_t width;
     std::stack<IntPoint> untreated_node;
+    std::vector<std::pair<fEdge, Color_RGB>> activeEdges;
+    std::map<FPoint, Control_Point > AEgraph;
+    std::vector<std::vector<FPoint>> mainOutLines;
     bool edge_exist(size_t i, size_t j, Direction dir);
     std::tuple<double, double, double> get_color(size_t i, size_t j);
     void connect_block(size_t i, size_t j);
@@ -71,6 +82,11 @@ class Graph{
 	int islands_heuristic(size_t i, size_t j);
     void add_voronoi_edge(size_t i, size_t j);
 //    void set_weight(size_t i, size_t j);
+    void extractActiveNode();
+    void toAdjacencyList();
+    std::vector<FPoint> auxilary_traverse_graph(FPoint prev, FPoint curr);
+    void TraverseGraph(FPoint point);
+
     public:
         Graph();
         Node get_node(size_t i, size_t j);
@@ -88,6 +104,7 @@ class Graph{
 
         void planarize();
         void voronoi_formation();
+        std::vector<std::vector<FPoint>> getMainOutline();
 };
 
 /*

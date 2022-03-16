@@ -70,17 +70,95 @@ CMakeFiles/tester.dir/tests/tester.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/tester.dir/tests/tester.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/viet1004/MAP586/MAP586/Projects/myProject/tests/tester.cpp -o CMakeFiles/tester.dir/tests/tester.cpp.s
 
+CMakeFiles/tester.dir/src/image.cpp.o: CMakeFiles/tester.dir/flags.make
+CMakeFiles/tester.dir/src/image.cpp.o: src/image.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/viet1004/MAP586/MAP586/Projects/myProject/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/tester.dir/src/image.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/tester.dir/src/image.cpp.o -c /home/viet1004/MAP586/MAP586/Projects/myProject/src/image.cpp
+
+CMakeFiles/tester.dir/src/image.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/tester.dir/src/image.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/viet1004/MAP586/MAP586/Projects/myProject/src/image.cpp > CMakeFiles/tester.dir/src/image.cpp.i
+
+CMakeFiles/tester.dir/src/image.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/tester.dir/src/image.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/viet1004/MAP586/MAP586/Projects/myProject/src/image.cpp -o CMakeFiles/tester.dir/src/image.cpp.s
+
+CMakeFiles/tester.dir/src/graph.cpp.o: CMakeFiles/tester.dir/flags.make
+CMakeFiles/tester.dir/src/graph.cpp.o: src/graph.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/viet1004/MAP586/MAP586/Projects/myProject/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/tester.dir/src/graph.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/tester.dir/src/graph.cpp.o -c /home/viet1004/MAP586/MAP586/Projects/myProject/src/graph.cpp
+
+CMakeFiles/tester.dir/src/graph.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/tester.dir/src/graph.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/viet1004/MAP586/MAP586/Projects/myProject/src/graph.cpp > CMakeFiles/tester.dir/src/graph.cpp.i
+
+CMakeFiles/tester.dir/src/graph.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/tester.dir/src/graph.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/viet1004/MAP586/MAP586/Projects/myProject/src/graph.cpp -o CMakeFiles/tester.dir/src/graph.cpp.s
+
 # Object files for target tester
 tester_OBJECTS = \
-"CMakeFiles/tester.dir/tests/tester.cpp.o"
+"CMakeFiles/tester.dir/tests/tester.cpp.o" \
+"CMakeFiles/tester.dir/src/image.cpp.o" \
+"CMakeFiles/tester.dir/src/graph.cpp.o"
 
 # External object files for target tester
 tester_EXTERNAL_OBJECTS =
 
 tester: CMakeFiles/tester.dir/tests/tester.cpp.o
+tester: CMakeFiles/tester.dir/src/image.cpp.o
+tester: CMakeFiles/tester.dir/src/graph.cpp.o
 tester: CMakeFiles/tester.dir/build.make
+tester: /usr/lib/x86_64-linux-gnu/libopencv_stitching.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_aruco.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_bgsegm.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_bioinspired.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_ccalib.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_dnn_objdetect.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_dnn_superres.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_dpm.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_face.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_freetype.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_fuzzy.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_hdf.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_hfs.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_img_hash.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_line_descriptor.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_quality.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_reg.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_rgbd.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_saliency.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_shape.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_stereo.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_structured_light.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_superres.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_surface_matching.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_tracking.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_videostab.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_viz.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_xobjdetect.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_xphoto.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_highgui.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_datasets.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_plot.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_text.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_dnn.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_ml.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_phase_unwrapping.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_optflow.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_ximgproc.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_video.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_videoio.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_imgcodecs.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_objdetect.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_calib3d.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_features2d.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_flann.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_photo.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_imgproc.so.4.2.0
+tester: /usr/lib/x86_64-linux-gnu/libopencv_core.so.4.2.0
 tester: CMakeFiles/tester.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/viet1004/MAP586/MAP586/Projects/myProject/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable tester"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/viet1004/MAP586/MAP586/Projects/myProject/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable tester"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/tester.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

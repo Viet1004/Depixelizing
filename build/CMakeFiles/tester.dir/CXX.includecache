@@ -15,6 +15,10 @@ map
 -
 memory
 -
+cmath
+-
+stdlib.h
+-
 image.hpp
 /home/viet1004/MAP586/MAP586/Projects/myProject/include/myApp/image.hpp
 

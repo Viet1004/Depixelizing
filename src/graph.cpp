@@ -512,6 +512,233 @@ void Graph::voronoi_formation(){
     for(size_t i = 0; i < height; i++){
         for(size_t j = 0; j < width; j++){
             add_voronoi_edge(i,j);
+        }
+    }
+}
+
+Color_YUV darker(Color_YUV a, Color_YUV b)
+{
+    if(std::get<0>(a) < std::get<0>(b)) return a;
+    else return b;
+}
+
+void Graph::extractActiveNode(){
+    for (int i = 0; i< height; i++){
+        for (int j = 0; j< width; j++){
+            std::map<Direction,  std::pair<FPoint, FPoint>> edges = get_node(i,j).edge_Voronoi;
+            for( int k = 0; k < 8; k++){
+                if(edges.find((Direction)k) == edges.end()){
+                    int temp_i = i + direction[k][0];
+                    int temp_j = j + direction[k][1];
+                    if(insideBounds(temp_i, temp_j, 0, height -1, 0, width))
+                        activeEdges.push_back(std::make_pair(edges[(Direction)k], darker(image->get_YUV(i,j), image->get_YUV(temp_i,temp_j))));
+                    else    
+                        activeEdges.push_back(std::make_pair(edges[(Direction)k], image->get_YUV(i,j)));    
+                }
+            }
+        }
+    }
+}
+
+void Graph::toAdjacencyList(){
+    for(auto edge: activeEdges){
+        AEgraph[edge.first.first].neighbors.insert(std::make_pair(edge.first.second, edge.second));
+        AEgraph[edge.first.first].visited = false;
+        AEgraph[edge.first.second].neighbors.insert(std::make_pair(edge.first.first, edge.second));
+        AEgraph[edge.first.second].visited = false;
+    }
+}
+
+float angle(FPoint center, FPoint p1, FPoint p2){
+
+    float distance = sqrt((center.first - p1.first)*(center.first - p1.first) + (center.second - p1.second)*(center.second - p1.second));
+
+    float cos_ = (p1.first - center.first)/distance;
+    float sin_ = (p1.second - center.second)/distance;
+    
+    float Pi = acos(-1);
+    float theta;
+    if (sin_ > 0){
+        theta = 2*Pi - acos(cos_);
+    }
+    else theta = acos(cos_);
+//    cout << theta << endl;
+    float tempx;
+    float tempy;
+    tempx = cos(theta)*(p1.first - center.first) - sin(theta)* (p1.second - center.second) + center.first;
+    tempy = sin(theta)*(p1.first - center.first) + cos(theta)* (p1.second - center.second) + center.second;
+    p1 = std::make_pair(tempx, tempy);
+    
+    tempx = cos(theta)*(p2.first - center.first) - sin(theta)* (p2.second - center.second) + center.first;
+    tempy = sin(theta)*(p2.first - center.first) + cos(theta)* (p2.second - center.second) + center.first;
+    p2 = std::make_pair(tempx, tempy);
+    distance = sqrt((center.first - p2.first)*(center.first - p2.first) +(center.second - p2.second)*(center.second - p2.second));
+    
+    return(acos(p2.first -center.first)/distance);
+}
+int choose_direction(FPoint curr, FPoint prev, FPoint p1, FPoint p2){
+    float a12 = angle(curr, p1, p2) ;
+    float aprev1 = angle(curr, prev, p1);
+    float aprev2 = angle(curr, prev, p2);
+    if((float)a12 > (float)aprev1 && (float)a12 > (float)aprev2){
+        return 0;
+    }    
+    if((float)aprev1 > (float)a12 && (float)aprev1 > (float)aprev2){
+        return 1;
+    }    
+        if((float)aprev2 > (float)a12 && (float)aprev2 > (float)aprev1){
+        return 2;
+    }    
+    return 0;
+}
+
+std::vector<FPoint> Graph::auxilary_traverse_graph( FPoint prev, FPoint curr){
+    std::vector<FPoint> res{curr};
+    if (AEgraph[curr].visited == true){
+        return res;
+    }
+    while(true){
+        switch(AEgraph[curr].neighbors.size()){
+            case 1:
+                return res;
+            case 2:
+                if(AEgraph[curr].visited == true){
+                    return res;
+                }
+                if (AEgraph[curr].neighbors.begin()->first == prev){
+                    prev = curr;
+                    curr = (++AEgraph[curr].neighbors.begin())->first;
+                    res.push_back(curr);
+                    AEgraph[curr].visited = true;
+                }else{
+                    prev = curr;
+                    curr = AEgraph[curr].neighbors.begin()->first;
+                    res.push_back(curr);
+                    AEgraph[curr].visited = true;
+                }
+                break;
+            case 3:
+            {
+                if(AEgraph[curr].visited == true){
+                    return res;
+                }
+                FPoint temp[2];
+                size_t temp_i = 0;
+                for(std::set<std::pair<FPoint, Color_RGB>>::iterator i = AEgraph[curr].neighbors.begin(); i != AEgraph[curr].neighbors.end(); i++){
+                    if(i->first != prev)   temp[temp_i++] = i->first;
+                }
+                switch(choose_direction(curr, prev, temp[0], temp[1])){
+                    case 0:
+                        return res;
+                    case 1:
+                        prev = curr;
+                        curr = temp[0];
+                        res.push_back(curr);
+                        AEgraph[curr].visited = true;
+                    case 2:
+                        prev = curr;
+                        curr = temp[1];
+                        res.push_back(curr);
+                        AEgraph[curr].visited = true;
+                }
+                break;
+            }
+            case 4:
+            {
+                if(AEgraph[curr].visited == true){
+                    return res;
+                }
+                FPoint temp[3];
+                size_t temp_i = 0;
+                for(std::set<std::pair<FPoint, Color_RGB>>::iterator i = AEgraph[curr].neighbors.begin(); i != AEgraph[curr].neighbors.end(); i++){
+                    if(i->first != prev)   temp[temp_i++] = i->first;
+                }
+                prev = curr;
+                curr = temp[rand()%3];
+                res.push_back(curr);
+                AEgraph[curr].visited = true;
+                break;
+            }
+            default:
+                return res;
+        }
+    }
+    
+}
+
+void Graph::TraverseGraph(FPoint point){
+    FPoint curr = point;
+    FPoint prev = FPoint(-1,-1);
+    FPoint firstPoint;
+    FPoint secondPoint;
+    AEgraph[point].visited = true;
+    if(AEgraph[point].neighbors.size() == 1){
+        prev = curr;
+        curr = AEgraph[point].neighbors.begin()->first;
+        std::vector<FPoint> line = auxilary_traverse_graph(prev, curr); 
+        line.insert(line.begin(), prev);
+        mainOutLines.push_back(line);
+        return;
+    }
+    if(AEgraph[point].neighbors.size() == 2){
+        prev = curr;
+        firstPoint = AEgraph[point].neighbors.begin()->first;
+        secondPoint = (++AEgraph[point].neighbors.begin())->first;
+    }
+    if (AEgraph[point].neighbors.size() == 3){
+        prev = curr;
+        FPoint temp[3];
+        size_t temp_i = 0;
+        for(std::set<std::pair<FPoint, Color_RGB>>::iterator i = AEgraph[point].neighbors.begin(); i != AEgraph[curr].neighbors.end(); i++){
+            temp[temp_i++] = i->first;
+        }
+        switch(choose_direction(point, temp[0], temp[1], temp[2])){
+            case 0:
+                firstPoint = temp[1];
+                secondPoint = temp[2];
+            case 1:
+                firstPoint = temp[0];
+                secondPoint = temp[1];
+            case 2:
+                firstPoint = temp[0];
+                secondPoint = temp[2];
+        }
+            
+    }
+    if (AEgraph[point].neighbors.size() == 4){
+        prev = curr;
+        FPoint temp[4];
+        size_t temp_i = 0;
+        for(std::set<std::pair<FPoint, Color_RGB>>::iterator i = AEgraph[point].neighbors.begin(); i != AEgraph[curr].neighbors.end(); i++){
+            temp[temp_i++] = i->first;
+        }
+        firstPoint = temp[rand()%2];
+        secondPoint = temp[2+rand()%2];
+    }
+    std::vector<FPoint> line_1 = auxilary_traverse_graph(prev, firstPoint);
+    if(std::find(line_1.begin(), line_1.end(), secondPoint)!= line_1.end()){
+        mainOutLines.push_back(line_1);
+        return;
+    }
+    std::vector<FPoint> line_2 = auxilary_traverse_graph(prev, secondPoint); 
+    line_1.insert(line_1.begin(), prev);
+    std::reverse(line_2.begin(), line_2.end());
+    line_2.insert(line_2.end(), line_1.begin(), line_1.end());
+    mainOutLines.push_back(line_2);
+    return;    
+}
+
+std::vector<std::vector<FPoint>> Graph::getMainOutline(){
+    for (std::map<FPoint, Control_Point>::iterator i = AEgraph.begin(); i != AEgraph.end(); i++){
+        if(!i->second.visited){
+            TraverseGraph(i->first);
+        }
+    }
+    return mainOutLines;
+}
+
+
+
 /*            if ( i==0 && j == 0){
                 if (is_in(BOTTOM_LEFT, graph[i][j].neighbors)){
                     graph[i][j].edge_Voronoi.insert(std::pair<Direction, fEdge>(RIGHT, std::make_pair(std::make_pair(0., 1.),std::make_pair(0.75, 1.25))));
@@ -558,9 +785,9 @@ void Graph::voronoi_formation(){
                 }
             }
 */            
-        }
-    }
-}
+        
+    
+
 /*
 Node::Node(IntPoint position)
     : position(position)
