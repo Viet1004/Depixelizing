@@ -11,7 +11,6 @@ Graph::Graph(Image& IMage){
     this->image = &IMage;
     height = image->get_height();
     width = image->get_width();
-//    std::cout << "Hello: " << graph.size() << std::endl; 
     for(size_t i = 0; i < height; i++){
         std::vector<Node> temp;
         for(size_t j = 0; j < width; j++){
@@ -25,18 +24,25 @@ Node Graph::get_node(size_t i, size_t j){
     return graph[i][j];
 }
 
+bool insideBounds(size_t x, size_t y, size_t row_st, size_t row_end, size_t col_st, size_t col_end)
+{
+	return (x>=row_st && x <= row_end && y >= col_st && y <= col_end);
+}
+
 bool Graph::edge_exist(size_t i, size_t j, Direction dir){
     
     size_t first = i + direction[dir][0];
     size_t second = j + direction[dir][1];
-    std::tuple<double, double, double> origin = image->get_RGB(i,j);
-//    std::cout << dir << std::endl;
-//    std::cout << first << "    " << second << std::endl;
-    std::tuple<double, double, double> dest = image->get_RGB(first,second);
+    if(insideBounds(first, second, 0, height - 1, 0, width - 1)){
+        Color_RGB origin = image->get_RGB(i,j);
+
+        Color_RGB dest = image->get_RGB(first,second);
     
-    return (abs(std::get<0>(origin) - std::get<0>(dest)) < 24. \
-        && abs(std::get<1>(origin) - std::get<1>(dest)) < 7. \
-        && abs(std::get<2>(origin) - std::get<2>(dest)) < 6. );
+        return (abs(std::get<0>(origin) - std::get<0>(dest)) < 24. \
+            && abs(std::get<1>(origin) - std::get<1>(dest)) < 7. \
+            && abs(std::get<2>(origin) - std::get<2>(dest)) < 6. );
+    }
+    return false;
         
 }
 
@@ -92,14 +98,14 @@ void Graph::simple_link(){
             bool right = edge_exist(i, j+1, BOTTOM);
             bool down = edge_exist(i+1, j+1, LEFT);
             bool left = edge_exist(i+1, j, TOP);
-//            std::cout << "Inside simple_link" << cross_1 << cross_2 << up << right << down << left << std::endl;
+
             if (cross_1 && cross_2){
                 // If there exists two crosses
                 if (up || right || down || left){
                     connect_block(i,j);
                 }
                 else{
-                    std::cout << "untreated_node: " << i << j << std::endl;
+
                     untreated_node.push(std::make_pair(i,j));
                 }             
             }
@@ -216,10 +222,7 @@ void Graph::simple_link(){
     }
 }
 
-bool insideBounds(size_t x, size_t y, size_t row_st, size_t row_end, size_t col_st, size_t col_end)
-{
-	return (x>=row_st && x <= row_end && y >= col_st && y <= col_end);
-}
+
 
 int Graph::curves_heuristic(size_t i, size_t j){
     // This function implement the curves_heuristic algo in the paper
@@ -236,7 +239,7 @@ int Graph::curves_heuristic(size_t i, size_t j){
         next_y = j;
         dir = get_neighbors(i,j)[0];
         while(true){ 
-            std::cout << "Inside curves_heuristic 00"  << std::endl;
+
   
             next_x += direction[dir][0];
             next_y += direction[dir][1];
@@ -256,7 +259,7 @@ int Graph::curves_heuristic(size_t i, size_t j){
         next_y = j+1;
         dir = get_neighbors(i+1,j+1)[0];
         while(true){  
-            std::cout << "Inside curves_heuristic 11" << std::endl;
+
    
             next_x += direction[dir][0];
             next_y += direction[dir][1];
@@ -275,10 +278,7 @@ int Graph::curves_heuristic(size_t i, size_t j){
         next_y = j+1;
         dir = get_neighbors(i,j+1)[0];
         while(true){   
-            std::cout << "Inside curves_heuristic 01"  << std::endl;
-            std::cout << next_x << next_y << std::endl;
-            std::cout << i << j << std::endl;
-//            std::cout << "Inside curve_heuristic" << std::endl;
+
             next_x += direction[dir][0];
             next_y += direction[dir][1];
             if (get_valence(next_x, next_y) != 2) break;
@@ -297,7 +297,7 @@ int Graph::curves_heuristic(size_t i, size_t j){
         next_y = j;
         dir = get_neighbors(i+1,j)[0];
         while(true){   
-            std::cout << "Inside curves_heuristic 10"  << std::endl;
+
             
             next_x += direction[dir][0];
             next_y += direction[dir][1];
@@ -311,7 +311,7 @@ int Graph::curves_heuristic(size_t i, size_t j){
             }
         }    
     }
-    std::cout << "curves_heuristic score: " << weight_cross_1 - weight_cross_2 << std::endl;
+
     return weight_cross_1 - weight_cross_2;
 }
 
@@ -324,7 +324,7 @@ int Graph::sparse_pixels_heuristic(size_t i, size_t j){
     labels[3][3] = 1;
     labels[4][4] = 1;
     while(!st.empty()){
-        std::cout << "Inside sparse_pixels_heuristic " << st.size() << std::endl;
+
         std::pair<size_t,size_t> point = st.top();
         size_t p = point.first;
         size_t q = point.second;
@@ -352,7 +352,7 @@ int Graph::sparse_pixels_heuristic(size_t i, size_t j){
     labels_2[3][4] = 1;
     labels_2[4][3] = 1;
     while(!st.empty()){
-        std::cout << "Inside sparse_pixels_heuristic 2" << st.size() << std::endl;
+
 
         std::pair<size_t,size_t> point = st.top();
         size_t p = point.first;
@@ -371,7 +371,7 @@ int Graph::sparse_pixels_heuristic(size_t i, size_t j){
             continue;      
             }             
             if (labels_2[3+x-i][3+y-j] == 0){
-                std::cout << x << y << std::endl ;
+
                 st.push(std::make_pair(x,y));
 
                 labels_2[3+x-i][3+y-j] = 1;
@@ -385,7 +385,7 @@ int Graph::sparse_pixels_heuristic(size_t i, size_t j){
 		if(labels[h][k] == 1) componentA++;
 		if(labels_2[h][k] == 1) componentB++;
 	}
-    std::cout << "sparse_pixels_heuristic score: " << componentB << componentA << std::endl;
+
     return componentB - componentA;
 }
 int Graph::islands_heuristic(size_t i, size_t j){
@@ -398,7 +398,7 @@ int Graph::islands_heuristic(size_t i, size_t j){
     if (get_valence(i+1,j) == 0 || get_valence(i,j+1) == 0){
         weight2 = 5;
     }
-    std::cout << "islands_heuristic score: " << weight1 - weight2 << std::endl;
+
     return weight1 - weight2;
 }
     
@@ -532,22 +532,18 @@ Color_YUV darker(Color_YUV a, Color_YUV b)
 
 bool is_visible(Color_YUV color_1, Color_YUV color_2){
 
-    return !(abs(std::get<0>(color_1) - std::get<0>(color_2)) < 24. \
-        && abs(std::get<1>(color_1) - std::get<1>(color_2)) < 7. \
-        && abs(std::get<2>(color_1) - std::get<2>(color_2)) < 6. );
+    return !(abs(std::get<0>(color_1) - std::get<0>(color_2)) < 75.);
         
 }
 
 void Graph::extractActiveNode(){
-    std::cout << "Inside extract" << std::endl;
     for (int i = 0; i< height; i++){
         for (int j = 0; j< width; j++){
-            std::cout << i << " " << j << std::endl;
+
             std::map<Direction,  std::pair<FPoint, FPoint>> edges = get_node(i,j).edge_Voronoi;
             std::vector<Direction> temp_dir;
             for(auto iter = edges.begin(); iter != edges.end(); iter++){
                 temp_dir.push_back(iter->first);
-                std::cout << iter->first << std::endl;
             } 
             for( Direction k: temp_dir){
                 int temp_i = i + direction[k][0];
@@ -561,7 +557,8 @@ void Graph::extractActiveNode(){
                     else    
                         activeEdges.push_back(std::make_pair(edges[(Direction)k], image->get_YUV(i,j)));    
                 }
-*/    
+*/
+    
                 
                 if(insideBounds(temp_i, temp_j, 0, height -1, 0, width-1)){
                     if(is_visible(image->get_YUV(i,j), image->get_YUV(temp_i, temp_j)))    

@@ -6,6 +6,22 @@
 
 #IncludeRegexTransform: 
 
+/home/viet1004/MAP586/MAP586/Projects/myProject/include/myApp/graph.hpp
+vector
+-
+stack
+-
+map
+-
+memory
+-
+cmath
+-
+stdlib.h
+-
+image.hpp
+/home/viet1004/MAP586/MAP586/Projects/myProject/include/myApp/image.hpp
+
 /home/viet1004/MAP586/MAP586/Projects/myProject/include/myApp/image.hpp
 vector
 -
@@ -16,11 +32,9 @@ iostream
 opencv2/opencv.hpp
 -
 
-/home/viet1004/MAP586/MAP586/Projects/myProject/src/image.cpp
-../include/myApp/image.hpp
-/home/viet1004/MAP586/MAP586/Projects/myProject/include/myApp/image.hpp
-iostream
--
+/home/viet1004/MAP586/MAP586/Projects/myProject/src/graph.cpp
+../include/myApp/graph.hpp
+/home/viet1004/MAP586/MAP586/Projects/myProject/include/myApp/graph.hpp
 
 /usr/include/opencv4/opencv2/calib3d.hpp
 opencv2/core.hpp

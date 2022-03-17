@@ -30,7 +30,7 @@ std::tuple<double, double, double> Image::convertTo_YUV(size_t i, size_t j){
     double r = mat_image.at<cv::Vec3b>(i,j)[0];
     double g = mat_image.at<cv::Vec3b>(i,j)[1];
     double b = mat_image.at<cv::Vec3b>(i,j)[2]; 
-    std::cout << i << j << "   RGB color: " << r << " " << g  << " " << b << std::endl;   
+
     double y = 0.299 * r + 0.587 * g + 0.114 * b;
     double u = 0.492 * (b - y);
     double v = 0.877 * (r - y);

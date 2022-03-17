@@ -58,12 +58,17 @@ int main(int argc, char** argv)
 	}
 	std::string output_path = std::string(argv[2]);
 	*/
-//   	Mat image;//taking an image matrix//
-//   	image = imread("/home/viet1004/MAP586/MAP586/Projects/depixelize/test/snow.bmp");//loading an image//
-//	imshow("test",image);
-//	std::string input_path = std::string(argv[1]);
-//	Image mat_image(input_path);
-	Image mat_image("../tests/Images/dolphin.bmp");
+	if(argc < 3)
+	{
+		std::cout << "Usage: " << argv[0] << " <<image_path>> <<output_path>>\n";
+		return 1;
+	}
+	std::string output_path = std::string(argv[2]);
+
+	//Image contains Pixel Data
+	Image inputImage = Image(std::string(argv[1]));
+
+	Image mat_image(inputImage);
     Graph graph(mat_image);
 //   	Node node = graph.get_node(1,1);
 //	graph.simple_link();
@@ -74,46 +79,22 @@ int main(int argc, char** argv)
 
 	graph.extractActiveNode();
 	graph.toAdjacencyList();
-/*    std::vector<Direction> neighbor11 = graph.get_neighbors(0,0);
-    std::vector<Direction>::iterator d; 
-    d = std::find(neighbor11.begin(), neighbor11.end(), RIGHT);
-    if (d == neighbor11.end()){
-        std::cout << neighbor11[0] << neighbor11[1] << std::endl;
-    }
-*/
 	svg::Dimensions dimensions(IMAGE_SCALE * graph.get_height(),IMAGE_SCALE * graph.get_width());
-	svg::Document doc("testingsnow1.svg", svg::Layout(dimensions, svg::Layout::TopLeft));
+	svg::Document doc(output_path, svg::Layout(dimensions, svg::Layout::BottomLeft));
     
 	std::vector<FPoint> matrix = {std::make_pair(0,0),std::make_pair(1,1),std::make_pair(0,2)};
-	Color_RGB color = std::make_tuple(125,125,255);
 
 	
 
 	std::vector<std::pair<fEdge, Color_RGB>> activeEdges = graph.get_activeEdges();
 
-	for (auto edge : activeEdges){
-			std::cout << "Edges:" << std::endl;
-			std::cout << edge.first.first.first << " " << edge.first.first.second << std::endl; 
-			std::cout << edge.first.second.first << " " << edge.first.second.second << std::endl;
-	}
 
 //	printSpline(doc, matrix, color);
 	drawVoronoi(doc, graph, mat_image);
 	
-//	std::vector<std::pair<FPoint, Color_RGB>> points = {std::make_pair(std::make_pair(0,0), std::make_tuple(225,125,255)),
-//														std::make_pair(std::make_pair(1,1), std::make_tuple(125,225,255)),
-//														std::make_pair(std::make_pair(0,2), std::make_tuple(125,0,0)),
-//														std::make_pair(std::make_pair(2,2), std::make_tuple(125,0,255))};
 	graph.linkMainOutline();
 
 	std::vector<std::vector<std::pair<FPoint, Color_RGB>>> mainOutlines = graph.getMainOutline();
-/*	for (auto line: mainOutlines){
-		std::cout << "line: " << std::endl; 
-		for (auto point: line){
-			std::cout << point.first.first << point.first.second << std::endl;
-		}
-	}
-*/
 	drawImage_(doc, mainOutlines);
 	doc.save();
 
