@@ -34,7 +34,7 @@ bool Graph::edge_exist(size_t i, size_t j, Direction dir){
 //    std::cout << first << "    " << second << std::endl;
     std::tuple<double, double, double> dest = image->get_RGB(first,second);
     
-    return (abs(std::get<0>(origin) - std::get<0>(dest)) < 48. \
+    return (abs(std::get<0>(origin) - std::get<0>(dest)) < 24. \
         && abs(std::get<1>(origin) - std::get<1>(dest)) < 7. \
         && abs(std::get<2>(origin) - std::get<2>(dest)) < 6. );
         
@@ -182,7 +182,7 @@ void Graph::simple_link(){
         
             if(!cross_1 && !cross_2){
                 // if none of the cross existes
-                if(up && down && left && right){
+                if(((int)up + (int)down + (int)left + (int)right) >= 3){
                     connect_block(i,j);
                 }else{
                     if(up){
@@ -193,14 +193,22 @@ void Graph::simple_link(){
                         add_neighbor(i+1,j,RIGHT);
                         add_neighbor(i+1,j+1,LEFT);
                     }
-                    if(left){
-                        add_neighbor(i+1,j,TOP);
-                        add_neighbor(i,j,BOTTOM);
+                    if(left){                      //   
+                        add_neighbor(i+1,j,TOP);  //     
+                        add_neighbor(i,j,BOTTOM);//     
                     }
                     if(right){
                         add_neighbor(i,j+1,BOTTOM);
                         add_neighbor(i+1,j+1,TOP);
                     }    
+                    if((up && right) || (down && left)){
+                        add_neighbor(i,j, BOTTOM_RIGHT);
+                        add_neighbor(i+1,j+1, TOP_LEFT);
+                    }
+                    if((up && left) || (down && right)){
+                        add_neighbor(i,j+1, BOTTOM_LEFT);
+                        add_neighbor(i+1,j, TOP_RIGHT);
+                    }
                 }
             }
         
@@ -485,7 +493,7 @@ void Graph::add_voronoi_edge(size_t i, size_t j){
     }
     // Bottom left corner
     if (!insideBounds(i+1,j, 0, height - 1, 0, width - 1) || !insideBounds(i,j, 0, height - 1, 1, width )){
-        graph[i][j].edge_Voronoi.insert(std::pair<Direction, fEdge>(BOTTOM, std::make_pair(str_point,std::make_pair(fi, fj+1.))));    
+        graph[i][j].edge_Voronoi.insert(std::pair<Direction, fEdge>(BOTTOM, std::make_pair(str_point,std::make_pair(fi+1., fj))));    
         str_point = std::make_pair(fi+1., fj);
     }else{
         if(std::find(graph[i][j].neighbors.begin(), graph[i][j].neighbors.end(), BOTTOM_LEFT) != graph[i][j].neighbors.end()){
@@ -498,7 +506,7 @@ void Graph::add_voronoi_edge(size_t i, size_t j){
             str_point = std::make_pair(fi+0.75, fj+0.25);
         }
         else{
-            graph[i][j].edge_Voronoi.insert(std::pair<Direction, fEdge>(BOTTOM, std::make_pair(str_point,std::make_pair(fi, fj+1.))));    
+            graph[i][j].edge_Voronoi.insert(std::pair<Direction, fEdge>(BOTTOM, std::make_pair(str_point,std::make_pair(fi+1, fj))));    
             str_point = std::make_pair(fi+1.,fj);
         }
     }
@@ -522,7 +530,16 @@ Color_YUV darker(Color_YUV a, Color_YUV b)
     else return b;
 }
 
+bool is_visible(Color_YUV color_1, Color_YUV color_2){
+
+    return !(abs(std::get<0>(color_1) - std::get<0>(color_2)) < 24. \
+        && abs(std::get<1>(color_1) - std::get<1>(color_2)) < 7. \
+        && abs(std::get<2>(color_1) - std::get<2>(color_2)) < 6. );
+        
+}
+
 void Graph::extractActiveNode(){
+    std::cout << "Inside extract" << std::endl;
     for (int i = 0; i< height; i++){
         for (int j = 0; j< width; j++){
             std::cout << i << " " << j << std::endl;
@@ -533,15 +550,25 @@ void Graph::extractActiveNode(){
                 std::cout << iter->first << std::endl;
             } 
             for( Direction k: temp_dir){
+                int temp_i = i + direction[k][0];
+                int temp_j = j + direction[k][1];
+/*                    
                 if(std::find(graph[i][j].neighbors.begin(),graph[i][j].neighbors.end(), k) == graph[i][j].neighbors.end()){
                     std::cout << k << std::endl;
-                    int temp_i = i + direction[k][0];
-                    int temp_j = j + direction[k][1];
-                    if(insideBounds(temp_i, temp_j, 0, height -1, 0, width))
+                    
+                    if(insideBounds(temp_i, temp_j, 0, height -1, 0, width-1))
                         activeEdges.push_back(std::make_pair(edges[(Direction)k], darker(image->get_YUV(i,j), image->get_YUV(temp_i,temp_j))));
                     else    
                         activeEdges.push_back(std::make_pair(edges[(Direction)k], image->get_YUV(i,j)));    
                 }
+*/    
+                
+                if(insideBounds(temp_i, temp_j, 0, height -1, 0, width-1)){
+                    if(is_visible(image->get_YUV(i,j), image->get_YUV(temp_i, temp_j)))    
+                        activeEdges.push_back(std::make_pair(edges[(Direction)k], darker(image->get_YUV(i,j), image->get_YUV(temp_i,temp_j))));
+                }
+  
+                
             }
         }
     }
@@ -599,8 +626,8 @@ int choose_direction(FPoint curr, FPoint prev, FPoint p1, FPoint p2){
     return 0;
 }
 
-std::vector<std::pair<FPoint, Color_RGB>> Graph::auxilary_traverse_graph( FPoint prev, FPoint curr){
-    std::vector<std::pair<FPoint, Color_RGB>> res{std::make_pair(curr,std::make_tuple(0,255,255))};
+std::vector<std::pair<FPoint, Color_RGB>> Graph::auxilary_traverse_graph( FPoint prev, FPoint curr, Color_RGB color){
+    std::vector<std::pair<FPoint, Color_RGB>> res{std::make_pair(curr,color)};
     if (AEgraph[curr].visited == true){
         return res;
     }
@@ -678,58 +705,78 @@ void Graph::TraverseGraph(FPoint point){
     FPoint curr = point;
     FPoint prev = FPoint(-1,-1);
     FPoint firstPoint;
+    Color_RGB color_1;
     FPoint secondPoint;
+    Color_RGB color_2;
     AEgraph[point].visited = true;
     if(AEgraph[point].neighbors.size() == 1){
         prev = curr;
         curr = AEgraph[point].neighbors.begin()->first;
-        std::vector<std::pair<FPoint, Color_RGB>> line = auxilary_traverse_graph(prev, curr); 
-        line.insert(line.begin(), std::make_pair(prev, std::make_tuple(0,255,255)));
+        std::vector<std::pair<FPoint, Color_RGB>> line = auxilary_traverse_graph(prev, curr, AEgraph[point].neighbors.begin()->second); 
+        line.insert(line.begin(), std::make_pair(prev, AEgraph[point].neighbors.begin()->second));
         mainOutLines.push_back(line);
         return;
     }
     if(AEgraph[point].neighbors.size() == 2){
         prev = curr;
         firstPoint = AEgraph[point].neighbors.begin()->first;
+        color_1 = AEgraph[point].neighbors.begin()->second;
         secondPoint = (++AEgraph[point].neighbors.begin())->first;
+        color_2 = (++AEgraph[point].neighbors.begin())->second;
     }
     if (AEgraph[point].neighbors.size() == 3){
         prev = curr;
         FPoint temp[3];
+        Color_RGB temp_color[3];
         size_t temp_i = 0;
         for(std::set<std::pair<FPoint, Color_RGB>>::iterator i = AEgraph[point].neighbors.begin(); i != AEgraph[curr].neighbors.end(); i++){
-            temp[temp_i++] = i->first;
+            temp[temp_i] = i->first;
+            temp_color[temp_i] = i->second;
+            temp_i++;
         }
         switch(choose_direction(point, temp[0], temp[1], temp[2])){
             case 0:
                 firstPoint = temp[1];
+                color_1 = temp_color[1];
                 secondPoint = temp[2];
+                color_2 = temp_color[2];
             case 1:
                 firstPoint = temp[0];
+                color_1 = temp_color[0];
                 secondPoint = temp[1];
+                color_2 = temp_color[1];
             case 2:
                 firstPoint = temp[0];
+                color_1 = temp_color[0];
                 secondPoint = temp[2];
+                color_2 = temp_color[2];
         }
             
     }
     if (AEgraph[point].neighbors.size() == 4){
         prev = curr;
         FPoint temp[4];
+        Color_RGB temp_color[4];
         size_t temp_i = 0;
         for(std::set<std::pair<FPoint, Color_RGB>>::iterator i = AEgraph[point].neighbors.begin(); i != AEgraph[curr].neighbors.end(); i++){
-            temp[temp_i++] = i->first;
+            temp[temp_i] = i->first;
+            temp_color[temp_i] = i -> second;
+            temp_i++;
         }
-        firstPoint = temp[rand()%2];
-        secondPoint = temp[2+rand()%2];
+        int temp_1 = rand()%2;
+        int temp_2 = 2+rand()%2;
+        firstPoint = temp[temp_1];
+        color_1 = temp_color[temp_1];
+        secondPoint = temp[temp_2];
+        color_2 = temp_color[temp_2];
     }
-    std::vector<std::pair<FPoint, Color_RGB>> line_1 = auxilary_traverse_graph(prev, firstPoint);
+    std::vector<std::pair<FPoint, Color_RGB>> line_1 = auxilary_traverse_graph(prev, firstPoint, color_1);
 //    if(std::find(line_1.begin(), line_1.end(), secondPoint)!= line_1.end()){
 //        mainOutLines.push_back(line_1);
 //        return;
 //    }
-    std::vector<std::pair<FPoint, Color_RGB>> line_2 = auxilary_traverse_graph(prev, secondPoint); 
-    line_1.insert(line_1.begin(), std::make_pair(prev, std::make_tuple(0,255,255)));
+    std::vector<std::pair<FPoint, Color_RGB>> line_2 = auxilary_traverse_graph(prev, secondPoint, color_2); 
+    line_1.insert(line_1.begin(), std::make_pair(prev, color_1));
     std::reverse(line_2.begin(), line_2.end());
     line_2.insert(line_2.end(), line_1.begin(), line_1.end());
     mainOutLines.push_back(line_2);

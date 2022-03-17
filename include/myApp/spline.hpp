@@ -15,6 +15,6 @@ class Spline{
 };
 
 void printSpline(svg::Document& doc, std::vector<FPoint> matrix, Color_RGB color);
-void drawImage_(svg::Document &doc, std::vector<std::pair<FPoint, Color_RGB>> points);
+void drawImage_(svg::Document &doc, std::vector<std::vector<std::pair<FPoint, Color_RGB>>> points);
 
 #endif

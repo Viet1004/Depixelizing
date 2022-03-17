@@ -44,6 +44,12 @@ graph.hpp
 ../../src/simple-svg.hpp
 /home/viet1004/MAP586/MAP586/Projects/myProject/src/simple-svg.hpp
 
+/home/viet1004/MAP586/MAP586/Projects/myProject/src/image.cpp
+../include/myApp/image.hpp
+/home/viet1004/MAP586/MAP586/Projects/myProject/include/myApp/image.hpp
+iostream
+-
+
 /home/viet1004/MAP586/MAP586/Projects/myProject/src/main.cpp
 iostream
 -

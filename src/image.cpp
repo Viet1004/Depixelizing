@@ -38,9 +38,9 @@ std::tuple<double, double, double> Image::convertTo_YUV(size_t i, size_t j){
 }
 
 std::tuple<double, double, double> Image::get_RGB(size_t i, size_t j){
-    double r = mat_image.at<cv::Vec3b>(i,j)[0];
+    double b = mat_image.at<cv::Vec3b>(i,j)[0];
     double g = mat_image.at<cv::Vec3b>(i,j)[1];
-    double b = mat_image.at<cv::Vec3b>(i,j)[2]; 
+    double r = mat_image.at<cv::Vec3b>(i,j)[2]; 
     return std::make_tuple(r,g,b);
 }
 

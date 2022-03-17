@@ -23,7 +23,7 @@ void drawPolygon(svg::Document &doc, std::vector<std::pair<float,float> > hull, 
 	doc << polygon;
 }
 
-void drawImage(svg::Document &doc, Graph& graph, Image& image)
+void drawVoronoi(svg::Document &doc, Graph& graph, Image& image)
 {
 	//Draw Voronoi Diagrams
 	
@@ -63,7 +63,7 @@ int main(int argc, char** argv)
 //	imshow("test",image);
 //	std::string input_path = std::string(argv[1]);
 //	Image mat_image(input_path);
-	Image mat_image("../tests/Images/2x2.bmp");
+	Image mat_image("../tests/Images/dolphin.bmp");
     Graph graph(mat_image);
 //   	Node node = graph.get_node(1,1);
 //	graph.simple_link();
@@ -81,7 +81,7 @@ int main(int argc, char** argv)
         std::cout << neighbor11[0] << neighbor11[1] << std::endl;
     }
 */
-	svg::Dimensions dimensions(IMAGE_SCALE * graph.get_width(), IMAGE_SCALE * graph.get_height());
+	svg::Dimensions dimensions(IMAGE_SCALE * graph.get_height(),IMAGE_SCALE * graph.get_width());
 	svg::Document doc("testingsnow1.svg", svg::Layout(dimensions, svg::Layout::TopLeft));
     
 	std::vector<FPoint> matrix = {std::make_pair(0,0),std::make_pair(1,1),std::make_pair(0,2)};
@@ -96,17 +96,25 @@ int main(int argc, char** argv)
 			std::cout << edge.first.first.first << " " << edge.first.first.second << std::endl; 
 			std::cout << edge.first.second.first << " " << edge.first.second.second << std::endl;
 	}
+
 //	printSpline(doc, matrix, color);
-//	drawImage(doc, graph, mat_image);
+	drawVoronoi(doc, graph, mat_image);
 	
 //	std::vector<std::pair<FPoint, Color_RGB>> points = {std::make_pair(std::make_pair(0,0), std::make_tuple(225,125,255)),
 //														std::make_pair(std::make_pair(1,1), std::make_tuple(125,225,255)),
 //														std::make_pair(std::make_pair(0,2), std::make_tuple(125,0,0)),
 //														std::make_pair(std::make_pair(2,2), std::make_tuple(125,0,255))};
+	graph.linkMainOutline();
 
-	std::vector<std::vector<std::pair<FPoint, Color_RGB>>> mainOutLines = graph.getMainOutline();
-
-	drawImage_(doc, mainOutLines);
+	std::vector<std::vector<std::pair<FPoint, Color_RGB>>> mainOutlines = graph.getMainOutline();
+/*	for (auto line: mainOutlines){
+		std::cout << "line: " << std::endl; 
+		for (auto point: line){
+			std::cout << point.first.first << point.first.second << std::endl;
+		}
+	}
+*/
+	drawImage_(doc, mainOutlines);
 	doc.save();
 
 	return 0;

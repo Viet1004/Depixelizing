@@ -51,7 +51,7 @@ void drawImage_(svg::Document &doc, std::vector<std::vector<std::pair<FPoint, Co
 {
 	//Draw Voronoi Diagrams
 	for(auto points: outlines){
-		for(int i = 0; i < points.size()-2; i++)
+		for(int i = 0; i < points.size() - 2; i++)
 			printSpline(doc, {points[i].first,points[(i+1)%points.size()].first,points[(i+2)%points.size()].first}, points[i+1].second);
 	}
 	

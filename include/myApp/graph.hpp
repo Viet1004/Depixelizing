@@ -83,7 +83,7 @@ class Graph{
     void add_voronoi_edge(size_t i, size_t j);
 //    void set_weight(size_t i, size_t j);
 
-    std::vector<std::pair<FPoint, Color_RGB>> auxilary_traverse_graph(FPoint prev, FPoint curr);
+    std::vector<std::pair<FPoint, Color_RGB>> auxilary_traverse_graph(FPoint prev, FPoint curr, Color_RGB color);
     void TraverseGraph(FPoint point);
 
     public:
