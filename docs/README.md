@@ -30,7 +30,7 @@ To run the code, simple type
 
 ## Result
 
-![Author result](../tests/pixelizing author.png)
+![Author result](../tests/pixelizing_author.png)
 
 ![Our result](../tests/pixelizing.png)
 
