@@ -28,3 +28,12 @@ To run the code, simple type
 ./DEPIXELIZER input_path output_path
 ```
 
+## Result
+
+![Author result](./tests/pixelizing author.png)
+
+![Our result](./tests/pixelizing.png)
+
+Remark:
+
+In our implementation, we haven't implemented the last step, which is optimizing the curve. In addition, there are still some miscategorise pixel in our algorithm. That's why we see some color red in the edges.
