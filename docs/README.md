@@ -30,9 +30,9 @@ To run the code, simple type
 
 ## Result
 
-![Author result](./tests/pixelizing author.png)
+![Author result](tests/pixelizing author.png)
 
-![Our result](./tests/pixelizing.png)
+![Our result](tests/pixelizing.png)
 
 Remark:
 
