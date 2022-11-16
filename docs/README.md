@@ -1,4 +1,4 @@
-This project is done under the course MAP586
+# Depixelizing pixel art
 
 The goal of this project is to smooth out the the pixel arts.
 
@@ -13,15 +13,18 @@ The implementation of our algorithm consists of three steps:
 
 3. After changing the shape of the pixel, we use spline curve to smooth out the shape
 
+
+For the detailed implementation of the algorithm, see [here](https://johanneskopf.de/publications/pixelart/paper/pixel.pdf)
+
+For brief walkthrough of our implementation, see the report
+
+
+## Execution
+
 The executable files are in the folder "build"
 
 To run the code, simple type 
 ```
 ./DEPIXELIZER input_path output_path
 ```
-
-For the detailed implementation of the algorithm, see [here](https://johanneskopf.de/publications/pixelart/paper/pixel.pdf)
-
-For brief walkthrough of our implementation, see the report
-
 
